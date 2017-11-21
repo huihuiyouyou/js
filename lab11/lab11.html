@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
-	<link rel="stylesheet" type="text/css" href="lab11.css">
+<meta charset="utf-8" />
+<title>无标题文档</title>
+
 </head>
+
 <body>
-     <div class="aa">
-        <div class="cc">
-     	<img src="images/pic4.jpg">
-     	</div>
-        <div class="bb">
-        	伦敦
-        </div>
-     </div>
-     <div class="aa">
-        <div class="cc">
-     	<img src="images/pic2.jpg">
-     	</div>
-     	<div class="bb">
-     		北欧
-     	</div>
-     </div>
-     <div class="aa">
-        <div class="cc">
-     	<img src="images/pic3.jpg">
-     	</div>
-     	<div class="bb" >
-     		华盛顿
-     	</div>
-     </div>
-     <div class="aa">
-        <div class="cc">
-     	<img src="images/pic1.jpg">
-     	</div>
-     	<div class="bb">
-     		巴黎
-     	</div>
-     </div>
-     <div class="aa">
-        <div class="cc">
-     	<img src="images/pic5.jpg">
-        </div>
-     	<div class="bb">
-     		威尼斯
-     	</div>
-     </div>
+    <div id="div">
+        <img src="img/0.png" />
+        <img src="img/8.png" />
+        时
+        <img src="img/1.png" />
+        <img src="img/5.png" />
+        分
+        <img src="img/0.png" />
+        <img src="img/9.png" />
+        秒
+    </div>
+    <input type="button" value="停止" id="inp" onclick="fn()">
+    <input type="button" value="开始" id="inp" onclick="fn1()">
+</body>
+<script type="text/javascript">
+    // 这个案例要能自己背着写出来了
+    function show(){
+        var d = new Date();
+        var hours = d.getHours();
+        var mins = d.getMinutes();
+        var secs = d.getSeconds();
+        // console.log(hours,mins,secs)
+        var arr = [Math.floor(hours/10),hours%10,Math.floor(mins/10),mins%10,Math.floor(secs/10),secs%10];
+        for(var i=0; i<6; i++){
+            document.images[i].src = 'img/'+arr[i]+'.png'
+        }
+    }
+    //点击停止按钮执行的事件处理函数，关闭定时器
+    function fn(){
+        clearInterval(id);
+    }
+    // 点击开始按钮执行的事件处理函数，打开定时器
+    function fn1(){
+        id = setInterval(show,1000);
+    }
+    // 页面加载后就开启的定时器，时间一秒变一次
+    var id = setInterval(show,1000);
+</script>
 </body>
 </html>
