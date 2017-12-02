@@ -5,9 +5,12 @@
   
 </title>
 <style type="text/css">
-  body{
+  /*body{
     margin=0;
     padding=0;
+  }
+  div{
+    border:1px solid red;
   }
   
   #big
@@ -50,6 +53,23 @@
   .div{
     width:280px;
     height:300px;
+    
+  }*/
+  ul{
+    list-style: none;
+
+  }
+  #one a{
+     text-decoration: none;
+  }
+  .one{
+    position: absolute;
+    left:20px;
+    top:30px;
+  }
+  .two{
+    position: relative;
+    
   }
 
 </style>
@@ -60,46 +80,48 @@ window.onload=function(){
       for(var i=0;i<ok.length;i++)
       {
         ok[i].onmouseover=function (){
-          num[i].className="yellow1";
+          this.children[0].className="yellow1";
         }
         ok[i].onmouseout=function (){
-          num[i].className="yellow";
+          this.children[0].className="yellow";
         }
-      }
-
-
+      }   
 }
 </script>
 </head>
 <body>
-<div id="big">
-  <div class="big0" style="background-image:url(images/0.png);margin-right: 10px;">
+<!-- <div id="big">
+  <div class="big0" style="background-image:url(images/01.png);margin-right: 10px;">
   </div>
-  <div class="div" style="background-image:url(images/1.png);margin-bottom: 10px;margin-right: 10px;">
+  <div class="div" style="background-image:url(images/11.png);margin-bottom: 10px;margin-right: 10px;">
         <div class="yellow" ">这个产品真的很不错</div>
   </div>
-  <div class="div" style="background-image:url(images/2.png);margin-bottom: 10px;margin-right: 10px;">
+  <div class="div" style="background-image:url(images/21.png);margin-bottom: 10px;margin-right: 10px;">
         <div class="yellow">这个产品真的很不错</div>
   </div>
-  <div class="div" style="background-image:url(images/3.png);margin-bottom: 10px;margin-right: 10px;">
+  <div class="div" style="background-image:url(images/31.png);margin-bottom: 10px;margin-right: 10px;">
       <div class="yellow">这个产品真的很不错</div>
   </div>
-  <div class="div" style="background-image:url(images/4.png);margin-bottom: 10px;">
+  <div class="div" style="background-image:url(images/41.png);margin-bottom: 10px;">
       <div class="yellow">这个产品真的很不错</div>
   </div>
-  <div class="div" style="background-image:url(images/5.png);margin-right: 10px;">
+  <div class="div" style="background-image:url(images/51.png);margin-right: 10px;">
       <div class="yellow">这个产品真的很不错</div>
   </div>
-  <div class="div" style="background-image:url(images/6.png);margin-right: 10px;">
+  <div class="div" style="background-image:url(images/61.png);margin-right: 10px;">
       <div class="yellow">这个产品真的很不错</div>
   </div>
-  <div class="div" style="background-image:url(images/7.png);margin-right: 10px;">
+  <div class="div" style="background-image:url(images/71.png);margin-right: 10px;">
       <div class="yellow">这个产品真的很不错</div>
   </div>
-  <div class="div1" style="background-image:url(images/8.png);margin-bottom: 8px;">
+  <div class="div1" style="background-image:url(images/81.png);margin-bottom: 8px;">
   </div>
-  <div class="div1" style="background-image:url(images/9.png)">
+  <div class="div1" style="background-image:url(images/91.png)">
   </div>
-</div>
+</div> -->
+
+
+  <div class="one" style="width:100px;height:100px;background-color:red;"></div>
+  <div class="two" style="width:100px;height:100px;background-color:yellow;"></div>
 </body>
 </html>

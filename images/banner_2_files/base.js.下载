@@ -1,0 +1,423 @@
+//获取浏览器类型
+function getClientBrowser() {
+	var Sys = {};
+	var ua = navigator.userAgent.toLowerCase();
+	var s;
+	(s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] : (s = ua
+			.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] : (s = ua
+			.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] : (s = ua
+			.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] : (s = ua
+			.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+	if (Sys.ie) {
+		return "IE" + Sys.ie;
+	} else {
+		if (Sys.firefox) {
+			return "Firefox";
+		} else {
+			if (Sys.chrome) {
+				return "chrome";
+			} else {
+				if (Sys.opera) {
+					return "opera";
+				} else {
+					if (Sys.safari) {
+						return "Safari";
+					} else {
+						return "";
+					}
+				}
+			}
+		}
+	}
+}
+
+//获取客户端操作系统类型  
+function getClientOS() {
+	var sUserAgent = navigator.userAgent;
+	var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+	var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+	if (isMac) {
+		return "Mac";
+	}
+	var isUnix = (navigator.platform == "X11") && !isWin && !isMac;
+	if (isUnix) {
+		return "Unix";
+	}
+	var isLinux = (String(navigator.platform).indexOf("Linux") > -1);
+	if (isLinux) {
+		return "Linux";
+	}
+	if (isWin) {
+		var isWin2K = sUserAgent.indexOf("Windows NT 5.0") > -1 || sUserAgent.indexOf("Windows 2000") > -1;
+		if (isWin2K) {
+			return "Windows 2000";
+		}
+		var isWinXP = sUserAgent.indexOf("Windows NT 5.1") > -1 || sUserAgent.indexOf("Windows XP") > -1;
+		if (isWinXP) {
+			return "Windows XP";
+		}
+		var isWin2003 = sUserAgent.indexOf("Windows NT 5.2") > -1 || sUserAgent.indexOf("Windows 2003") > -1;
+		if (isWin2003) {
+			return "Windows 2003";
+		}
+		var isWin2003 = sUserAgent.indexOf("Windows NT 6.0") > -1 || sUserAgent.indexOf("Windows Vista") > -1;
+		if (isWin2003) {
+			return "Windows Vista";
+		}
+		var isWin2003 = sUserAgent.indexOf("Windows NT 6.1") > -1 || sUserAgent.indexOf("Windows 7") > -1;
+		if (isWin2003) {
+			return "Windows 7";
+		}
+	}
+	return "None";
+}
+//浏览器语言
+function getClientLanguage() {
+	var language = navigator.language;
+	var t = getClientBrowser();
+	if (t.indexOf("IE") > -1) {//IE
+		language = navigator.browserLanguage;
+	}
+	if (language == "zh-cn" || language == "zh-CN") {
+		language = "\u4e2d\u6587(\u7b80\u4f53)";
+	} else {
+		if (language == "zh-tw" || language == "zh-hk") {
+			language = "\u4e2d\u6587(\u7e41\u4f53)";
+		} else {
+			if (language == "en-us" || language == "en" || language == "en-US") {
+				language = "\u82f1\u6587(\u7f8e\u56fd)";
+			} else {
+				language = "";
+			}
+		}
+	}
+	return language;
+}
+
+//统计访问量
+function pageView(webId, categoryId, contentId) {
+	//new
+	var visits_url = window.location.href;//页面连接
+	var visits_from_url = document.referrer;//来源连接
+	var os = getClientOS();//操作系统
+	var name = getClientBrowser();//浏览器类型
+	var language = getClientLanguage();
+	var vscreen = screen.width + "*" + screen.height;
+	$.ajax({type:"POST", url:"/dynamic/pageView.jsp", async:true, data:{"type":"newsum", "webId":webId, "categoryId":categoryId, "contentId":contentId, "visits_url":visits_url, "visits_from_url":visits_from_url, "os":os, "name":name, "language":language, "screen":vscreen}, dataType:"text", success:function (data) {
+	}});
+}
+
+//
+//统计杂志访问量
+function magazinePageView(webId, magazineId, magazinetermId) {
+	$.ajax({type:"POST", url:"/dynamic/pageView.jsp", async:true, data:{"type":"magazinesum", "webId":webId, "magazineId":magazineId, "magazinetermId":magazinetermId}, dataType:"text", success:function (data) {
+	}});
+}
+
+//显示访问量
+function showpageView(webId, categoryId, contentId) {
+	if (webId != null) {
+		$("#_spv_web_" + webId).html("0");
+		$.ajax({type:"POST", url:"/dynamic/pageView.jsp", async:true, data:{"webId":webId, "type":"show"}, dataType:"text", success:function (data) {
+			$("#_spv_web_" + webId).html($.trim(data));
+		}});
+	}
+	if (categoryId != null) {
+		$("#_spv_category_" + categoryId).html("0");
+		$.ajax({type:"POST", url:"/dynamic/pageView.jsp", async:true, data:{"categoryId":categoryId, "type":"show"}, dataType:"text", success:function (data) {
+			$("#_spv_category_" + categoryId).html($.trim(data));
+		}});
+	}
+	if (contentId != null) {
+		$("#_spv_content_" + contentId).html("0");
+		$.ajax({type:"POST", url:"/dynamic/pageView.jsp", async:true, data:{"contentId":contentId, "type":"show"}, dataType:"text", success:function (data) {
+			$("#_spv_content_" + contentId).html($.trim(data));
+		}});
+	}
+}
+
+//留言提交
+function messageSubmit(messagesortsId) {
+	var messageTitle = "";
+	if ($("#messageTitle")) {
+		messageTitle = $("#messageTitle").val();
+		if (!messageTitle && $("#messageTitle").attr("required")) {
+			alert("\u6807\u9898\u4e0d\u80fd\u4e3a\u7a7a\uff01");
+			return false;
+		}
+	}
+	var userName = "";
+	if ($("#userName")) {
+		userName = $("#userName").val();
+		if (!userName && $("#userName").attr("required")) {
+			alert("\u8bf7\u586b\u5199\u59d3\u540d\uff01");
+			return false;
+		}
+	}
+	var userPhone = "";
+	if ($("#userPhone")) {
+		userPhone = $("#userPhone").val();
+		if (!userPhone && $("#userPhone").attr("required")) {
+			alert("\u8bf7\u586b\u5199\u8054\u7cfb\u7535\u8bdd\uff01");
+			return false;
+		}
+	}
+	var messageType = "";
+	if ($("#messageType")) {
+		messageType = $("#messageType").val();
+	}
+	var userCompany = "";
+	if ($("#userCompany")) {
+		userCompany = $("#userCompany").val();
+		if (!userCompany && $("#userCompany").attr("required")) {
+			alert("\u8bf7\u586b\u5199\u5de5\u4f5c\u5355\u4f4d!");
+			return false;
+		}
+	}
+	var userSex = "";
+	if ($("#userSex")) {
+		userSex = $("input:radio[name='userSex']:checked").val();
+	}
+	var userAge = "";
+	if ($("#userAge")) {
+		userAge = $("#userAge").val();
+		if (!userAge && $("#userAge").attr("required")) {
+			alert("\u8bf7\u586b\u5199\u5e74\u9f84\uff01");
+			return false;
+		}
+	}
+	var userAddress = "";
+	if ($("#userAddress")) {
+		userAddress = $("#userAddress").val();
+		if (!userAddress && $("#userAddress").attr("required")) {
+			alert("\u8bf7\u586b\u5199\u5730\u5740\uff01");
+			return false;
+		}
+	}
+	var userZipcode = "";
+	if ($("#userZipcode")) {
+		userZipcode = $("#userZipcode").val();
+		if (!userZipcode && $("#userZipcode").attr("required")) {
+			alert("\u8bf7\u586b\u5199\u90ae\u7f16\uff01");
+			return false;
+		}
+	}
+	var userMobile = "";
+	if ($("#userMobile")) {
+		userMobile = $("#userMobile").val();
+		if (!userMobile && $("#userMobile").attr("required")) {
+			alert("\u8bf7\u586b\u5199\u624b\u673a\u53f7\u7801\uff01");
+			return false;
+		}
+	}
+	var userIdcard = "";
+	if ($("#userIdcard")) {
+		userIdcard = $("#userIdcard").val();
+		if (!userIdcard && $("#userIdcard").attr("required")) {
+			alert("\u8bf7\u586b\u5199\u8eab\u4efd\u8bc1\u53f7\uff01");
+			return false;
+		}
+	}
+	var userEmail = "";
+	if ($("#userEmail")) {
+		userEmail = $("#userEmail").val();
+		if (!userEmail && $("#userEmail").attr("required")) {
+			alert("\u8bf7\u586b\u5199\u7535\u5b50\u90ae\u7bb1\uff01");
+			return false;
+		}
+	}
+	var messageIspublic = "";
+	if ($("#messageIspublic")) {
+		messageIspublic = $("input:radio[name='messageIspublic']:checked").val();
+	}
+	var messageContent = "";
+	if ($("#messageContent")) {
+		messageContent = $("#messageContent").val();
+		if (!messageContent && $("#messageContent").attr("required")) {
+			alert("\u5185\u5bb9\u4e0d\u80fd\u4e3a\u7a7a\uff01");
+			return false;
+		}
+	}
+	$.ajax({type:"POST", url:"/dynamic/message.jsp", async:false, data:{"msgTplType":8, "messagesortsId":messagesortsId, "messageTitle":messageTitle, "userName":userName, "userPhone":userPhone, "messageContent":messageContent, "messageType":messageType, "userCompany":userCompany, "userSex":userSex, "userAge":userAge, "userAddress":userAddress, "userZipcode":userZipcode, "userMobile":userMobile, "userIdcard":userIdcard, "userEmail":userEmail, "messageIspublic":messageIspublic}, dataType:"text", success:function (data) {
+		if ($.trim(data) == "0") {
+			alert("\u7559\u8a00\u63d0\u4ea4\u5931\u8d25\uff0c\u8bf7\u91cd\u8bd5\uff01");
+		} else if($.trim(data) == "1"){
+			alert("\u7559\u8a00\u5df2\u6210\u529f\u63d0\u4ea4\uff01");
+		}
+		document.getElementById("messageForm").reset();
+	}});
+}
+
+//评论提交
+function commentsSubmit() {
+	var contentId = $("#_comments_contentId").val();
+	var commentsUser = $("#_comments_commentsUser").val();
+	var commentsContent = $("#_comments_commentsContent").val();
+	if ($.trim(commentsUser).length == 0) {
+		alert("\u8bf7\u8f93\u5165\u8bc4\u8bba\u4eba");
+		return;
+	}
+	if ($.trim(commentsContent).length == 0) {
+		alert("\u8bf7\u8f93\u5165\u8bc4\u8bba\u5185\u5bb9");
+		return;
+	}
+	$.ajax({type:"POST", url:"/dynamic/comments.jsp", async:true, data:{"categoryId":contentId, "type":1, "commentsUser":commentsUser, "commentsContent":commentsContent}, dataType:"text", success:function (data) {
+		alert("\u8bc4\u8bba\u6210\u529f,\u8bf7\u7b49\u5f85\u7ba1\u7406\u5458\u5ba1\u6838");
+		document.getElementById("commentsSaveForm").reset();
+	}});
+}
+
+//显示文章审核通过的评论总数
+function showContentCount(contentId) {
+	if (contentId != null) {
+		$.ajax({type:"POST", url:"/dynamic/comments.jsp", async:false, data:{"categoryId":contentId, "type":3}, dataType:"text", success:function (data) {
+			$("#_scn_content_" + contentId).html($.trim(data));
+		}});
+	}
+}
+
+//检查调查投票复选框选项限制
+jQuery(function ($) {
+	$("input:checkbox[name*=\"item\"]").click(function () {
+		var subjectId = this.name.replace("item", "");
+		if (this.checked) {
+			var checkedid = $("input:checkbox[name*='item" + subjectId + "']:checked");
+			var selectlimit = $("#selectLimite" + subjectId).val();
+			if (checkedid.length > selectlimit) {
+				alert("\u6700\u591a\u9009\u62e9" + selectlimit + "\u9879");
+				this.checked = false;
+			}
+		}
+	});
+});
+
+
+//提交投票
+function submitVote() {
+	var xml = "<?xml version=\"1.0\" encoding=\"gb2312\"?>";
+	xml += "<root>";
+	var voteId = $("#voteId").val();
+	var checkedid = $("input[name*=\"item\"]:checked");
+	var itemname = "";
+	if (checkedid.length > 0) {
+		$(checkedid).each(function () {
+			if (this.name != itemname) {
+				if (itemname == "") {
+					xml += "<item name='" + this.name.replace("item", "") + "'>";
+				} else {
+					xml += "</item><item name='" + this.name.replace("item", "") + "'>";
+				}
+			}
+			xml += "<value val='" + this.value + "'></value>";
+			itemname = this.name;
+		});
+		xml += "</item>";
+	}
+	var area = $("textarea[name*=\"item\"]");
+	itemname = "";
+	if (area.length > 0) {
+		$(area).each(function () {
+			if (this.name != itemname) {
+				if (itemname == "") {
+					xml += "<item name='" + this.name.replace("item", "") + "'>";
+				} else {
+					xml += "</item><item name='" + this.name.replace("item", "") + "'>";
+				}
+			}
+			xml += "<value val='" + this.value + "'></value>";
+			itemname = this.name;
+		});
+		xml += "</item>";
+	}
+	xml += "</root>";
+	$.ajax({type:"POST", url:"/dynamic/vote.jsp", async:false, data:{"voteId":voteId, "type":"submit", "xml":xml}, dataType:"text", success:function (data) {
+		if (data == 1) {
+			alert("\u60a8\u5df2\u6210\u529f\u63d0\u4ea4\u8c03\u67e5\u6295\u7968");
+		} else {
+			if (data == 0) {
+				alert("\u63d0\u4ea4\u8c03\u67e5\u6295\u7968\u5931\u8d25\uff0c\u8bf7\u91cd\u65b0\u5c1d\u8bd5");
+			} else {
+				if (data == -1) {
+					alert("\u8be5\u8c03\u67e5\u6295\u7968\u672a\u5f00\u59cb\uff01");
+				} else {
+					if (data == -2) {
+						alert("\u8be5\u8c03\u67e5\u6295\u7968\u5df2\u5173\u95ed\uff01");
+					} else {
+						if (data == -3) {
+							alert("\u8be5\u8c03\u67e5\u6295\u7968\u5df2\u7ed3\u675f\uff01");
+						} else {
+							if (data == -4) {
+								alert("\u540c\u4e00IP\u4e00\u5929\u53ea\u80fd\u6295\u4e00\u6b21\u7968\uff01");
+							}
+						}
+					}
+				}
+			}
+		}
+	}});
+}
+
+//显示投票结果
+function showVoteResult(subjectId, itemId) {
+	if (subjectId != null && itemId != null) {
+		$.ajax({type:"POST", url:"/dynamic/vote.jsp", async:true, data:{"subjectId":subjectId, "type":"showResult", "itemId":itemId}, dataType:"text", success:function (data) {
+			if (data) {
+				var count = data.split(",")[0];
+				var percent = data.split(",")[1];
+				$("#count" + itemId).empty();
+				$("#count" + itemId).append(count);
+				$("#chart" + itemId).css("width", percent + "px");
+				$("#percent" + itemId).empty();
+				$("#percent" + itemId).append(percent + "%");
+			}
+		}});
+	}
+}
+
+
+//验证前台是否登陆,如果登陆,返回用户信息,没登陆返回false;
+function checkLogin(){
+	var result = false;
+	$.ajax({type:"POST", url:"/dynamic/login.jsp", async:false, data:{"cmd":"checkLogin"}, dataType:"text", success:function (data) {
+		if (data && $.trim(data).length>0){
+			if(($.trim(data))=='false'){
+				result=false;
+			}else{
+				result=eval("("+$.trim(data)+")");
+			}
+		}
+	}});
+	return result;
+}
+
+//前台登陆,传递用户名,密码,成功返回用户信息,失败返回False
+function login(username,password,rememberme){
+	var result = false;
+	if(username!=null && $.trim(username).length>0 && password!=null && $.trim(password).length>0){
+		$.ajax({type:"POST", url:"/dynamic/login.jsp", async:false, data:{"cmd":"login", "username":username, "password":password,"rememberme":rememberme}, dataType:"text", success:function (data) {
+			if (data && $.trim(data).length>0){
+				if(($.trim(data))=='false'){
+					result=false;
+				}else{
+					result=eval("("+$.trim(data)+")");
+				}
+			}
+		}});
+	}
+	return result;
+}
+//前台注销
+function logout(){
+	var result = false;
+	$.ajax({type:"POST", url:"/dynamic/login.jsp", async:false, data:{"cmd":"logout"}, dataType:"text", success:function (data) {
+		if (data && $.trim(data).length>0){
+			if(($.trim(data))=='false'){
+				result=false;
+			}else{
+				result=true;
+			}
+		}
+	}});
+	return result;
+}
+
