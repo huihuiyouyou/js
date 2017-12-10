@@ -1,332 +1,364 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <style type="text/css">
-        * {
-        margin:0px;
-        padding:0px;
-        color:black;
+    <meta charset="UTF-8">
+    <title>QQ聊天</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
         }
-       #big{
-        width:1200px;
-        height:397px;
-        margin:0 auto;
-        overflow: hidden;
-        /*position:relative;*/
-       }
-       #big a{
-           display:none;
-       }
-       #smallimg{
-        background-image: url(images/xiaoxun.png);
-        width:1002px;
-        height:73px;
-        position: absolute;
-        top: 474px;
-        left:340px;
-       }
-       #smallimg span{
-        display:block;
-        height:73px;
-        width: 40px;
-        /*background-color: #c5c5c5;*/
-        text-align: center;
-        color: white;
-        padding-top: 5px;
-        font-size: 3em;
-       }
-       #gray{
-        width:100%;
-        height:397px;
-        background-color: #f7f7f7;
-        margin-top: 150px;
-        
-       }
-       #head{
-        position: absolute;
-        width:1000px;
-        height:150px;
-        left:330px;
-        top:0px;
-        
-       }
-       .blue{
-        width:1000px;
-        height:7px;
-        background-color: #284c7e;
-       }
-       #logo{
-        margin-top: 7px;
-        
-       }
-       #right{
-        left:740px;
-        margin-right: 10px;
-        top:0px;
-        position: absolute;
-       }
-       #right p a{
-        font-size:0.8em;
-        color:red;
-        text-decoration: none;
-       }
-       #right input{
-        display:block;
-        float:left;
-       }
-      #right p{
-        margin-bottom:7px;
-        margin-top: 8px;
-      }
-      hr{
-        display:block;
-        margin-top: 5px;
-      }
-      ul{
-        text-align: center;
-        list-style: none;
+        ul,ol,li{
+            list-style: none;
+        }
+        .clearFix:after{
+            content: "";
+            display: block;
+            clear: both;
+        }
+        #wrap{
+            width: 678px;
+            height: 615px;
+            margin: 10px auto;
+            border: 1px solid #000; 
+            background-color: #f8f7f4;
+        }
+        /*顶部样式*/
+        .header{
+            height: 50px;
+        }
+        .header>span{
+            float: left;
+            margin: 20px 0 0 12px;
+            line-height: 30px;
+        }
+        .headImg{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: url(img/head.png) center center;
+            background-size: cover;
+        }
+        /*导航样式*/
+        .nav{
+            height: 40px;
+            line-height: 37px;
+            border-bottom: 1px solid #e2e1df;
+        }
+        .nav>li{
+            float: left;
+            margin: 0 8px;
+            padding: 0 4px;
+            cursor: default;
+            color: #767676;
+        }
+        .nav>li:last-child:after{
+            content: "▼";
+            font-size: 10px;
+            margin-left: 5px;
+        }
+        .nav>li:hover{
+            color: #000;
+        }
+        .nav>.active{
+            color: #000;
+            border-bottom: 3px solid #009bdb;
+        }
+        /*底部主体样式*/
+        .footer>div{
+            float: left;
+        }
+        .notice{
+            width: 200px;
+            height: 525px;
+            border-left: 1px solid #e2e1df;
 
-      }
-      #choose li{
-        float:left;
-        width:111px;
-        height:55px;
-        
-      }
-
-    #choose li a{
-        display: block;
-        margin-top: 17px;
-        margin-bottom: 17px;
-        font-weight: bolder; 
-        text-decoration: none;
-
-    }
-    #choose li:hover{
-        background-color: #284c7e;
-    }
-    .second{
-        position:absolute;
-        display:none;
-        text-align: center;
-    }
-    #choose li ul li:hover{
-        background-color: #386ab0;
-
-    }
-    .second li{
-        width:111px;
-        height:55px;
-        background-color: #284c7e;
-        clear: both;
-        font-weight: lighter;
-        
-    }
-    
-
-    
-    
+        }
+        /*消息框样式*/
+        .talk{
+            width: 476px;
+            position:relative;
+        }
+        .talkMsg{
+            width: 476px;
+            height: 400px;
+            overflow-y: auto;
+            border-bottom: 1px solid #e2e1df;
+            position: :relative;
+        }
+        .time{
+            text-align: center;
+            color: #808080;
+            font-size: 10px;
+            line-height: 30px;
+        }
+        .talkInp{
+            height: 124px;
+        }
+        .myHead{
+            float: right;
+            margin-right: 12px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: url(img/myHead.jpg) center center;
+            background-size: cover;
+        }
+        .content{
+            float: right;
+        }
+        .conText{
+            padding: 10px;
+            max-width: 380px;
+            line-height: 22px;
+            border-radius: 8px;
+            margin-right: 10px;
+            font-size: 12px;
+            float: left;
+            background-color: #dfdddb;
+        }
+        .area{
+            width: 456px;
+            padding: 5px 10px;
+            height: 45px;
+            resize: none;
+            outline: none;
+            border: none;
+            background-color: #f8f7f4;
+        }
+        .btn{
+            float: right;
+        }
+        .btn li{
+            font-weight: bold;
+            cursor: default;
+            display: block;
+            float: left;
+            height: 24px;
+            line-height: 24px;
+            padding: 0 16px;
+            margin-right: 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            background-color: #dbd1be;
+        }
+        .send{
+            position: relative;
+        }
+        .send:after{
+            content: "▼";
+            color: #6e695f;
+            margin-left: 15px;
+        }
+        .warning{
+            width: 150px;
+            height: 50px;
+            border: 1px solid lightblue;
+            border-radius: 8px;
+            padding: 0 5px;
+            position: absolute;
+            left: -70px;
+            top: -55px;
+            display: none;
+        }
+        .rclick{
+            position:absolute;
+            /*width:130px;*/
+            height:130px;
+            
+            display:none;
+        }
+        .rclick ul{
+            display：block;
+            width:100px;
+            height:130px;
+            text-align: center;
+            line-height: 26px;
+            background-color: #fff;
+            float: left;
+        }
+        #special{
+            width:30px;
+            height:130px;
+            background-color: gray;
+            float: left;
+        }
+        #smile li{
+            float:left;
+        }
+        #smilesheet{
+            width:240px;
+            height:170px;
+            background-color: #fff;
+            text-align: center;
+            border: 2px solid gray; 
+            display:none;
+            position: absolute;
+            left:0px;
+            bottom:125px;
+        }
+        #smilesheet img{
+            float:left;
+            
+        }
     </style>
 </head>
 <body>
+    
+    <div id="wrap">
+        <div class="header">
+            <span class="headImg"></span>
+            <span>16级七八班事务通知群</span>
+        </div>
+        <ul class="nav">
+            <li class="active">聊天</li>
+            <li>公告</li>
+            <li>相册</li>
+            <li>文件</li>
+            <li>活动</li>
+            <li>设置</li>
+        </ul>
+        <div class="footer">
+            
+            <div class="talk">
+                <div class="rclick">
+                   <div id="special"></div>
+                   <ul>
+                       <li>复制</li>
+                       <li>全部选择</li>
+                       <hr>
+                       <li>显示比例</li>
+                       <li>使用多彩气泡</li>
+                       <hr>
+                       <li>清屏</li>
+                   </ul>
+                </div>
+                <div class="talkMsg">
+                    <ul id="msgBox">
+                        <li class="clearFix">
+                            <p class="time">2017/10/12 16:59:32</p>
+                            <p class="content">
+                                <span class="conText">好好学习</span>
+                                <span class="myHead"></span>
+                            </p>
+                        </li>
+                        <li class="clearFix">
+                            <p class="time">2017/10/12 16:59:32</p>
+                            <p class="content">
+                                <span class="conText">天天向上</span>
+                                <span class="myHead"></span>
+                            </p>
+                        </li>
+                    </ul>
 
-    <div id="head">
-        <div class='blue'></div>
-        <div id="logo">
-            <div><img src="images/logo (1).png"></div>
-            <div id="right">
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">旧版网页</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">English Version</a></p>
-                <input type="text" name=""  onfocus="Onfocus()" onblur="Onblur()"  value="搜索" style="width:200px;height:25px">
-                <input type="submit" name="" style="width:40px;height:29px">
+
+                    <div id="smilesheet">
+                        <p>符号表情</p>
+                        
+                    </div>
+                </div>
+                <div class="talkInp">
+                    <ul id="smile">
+                        <li><img src="images/0001.png"></li>
+                        <li><img src="images/0002.png"></li>
+                        <li><img src="images/0003.png"></li>
+                        <li><img src="images/0004.png"></li>
+                        <li><img src="images/0005.png"></li>
+                        <li><img src="images/0006.png"></li>
+                    </ul>
+                    <textarea class="area"></textarea>
+                    <ul class="btn">
+                        <li>关闭(c)</li>
+                        <li class="send">
+                            发送(s)
+                            <p class="warning">发送内容不能为空，请重新输入</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="notice">
+
             </div>
         </div>
-        <hr>
-        <ul id="choose">
-            <li class="zz">
-                <a href="#">首页</a>
-                
-            </li>
-            <li class="zz">
-                <a href="#">学校概况</a>
-                <ul class="second">
-                    <li><a href="#">学校简介</a></li>
-                    <li><a href="#">学科专业</a></li>
-                    <li><a href="#">治理架构</a></li>
-                    <li><a href="#">历史沿革</a></li>
-                    <li><a href="#">学校标志</a></li>
-                    <li><a href="#">校园风光</a></li>
-                    <li><a href="#">校园地图</a></li>
-                </ul>
-            </li>
-            <li class="zz">
-                <a href="#">机构设置</a>
-                <ul class="second">
-                    <li><a href="#">教学单位</a></li>
-                    <li><a href="#">管理服务</a></li>
-                    <li><a href="#">附属单位</a></li>
-                    <li><a href="#">汇华学院</a></li>
-                    
-                </ul>
-            </li>
-            <li class="zz"> 
-                <a href="#">人才培养</a>
-                <ul class="second">
-                    <li><a href="#">师资队伍</a></li>
-                    <li><a href="#">学科专业</a></li>
-                    <li><a href="#">本科生教育</a></li>
-                    <li><a href="#">研究生教育</a></li>
-                    <li><a href="#">继续教育</a></li>
-                    <li><a href="#">留学生教育</a></li>
-                    
-                </ul>
-            </li>
-            <li class="zz">
-                <a href="#">科学研究</a>
-                <ul class="second">
-                    <li><a href="#">自然科学</a></li>
-                    <li><a href="#">人文科学</a></li>
-                    <li><a href="#">合作交流</a></li>
-                    <li><a href="#">学术期刊</a></li>
-                    
-                </ul>
-            </li>
-            <li class="zz">
-                <a href="#">招生就业</a>
-                <ul class="second">
-                    <li><a href="#">本科招生</a></li>
-                    <li><a href="#">研究招生</a></li>
-                    <li><a href="#">治理架构</a></li>
-                    <li><a href="#">历史沿革</a></li>
-                    <li><a href="#">学校标志</a></li>
-                    <li><a href="#">校园风光</a></li>
-                    <li><a href="#">校园地图</a></li>
-                </ul>
-            </li>
-            <li class="zz">
-                <a href="#">人才招聘</a>
-                <ul class="second">
-                    <li><a href="#">学校简介</a></li>
-                    <li><a href="#">学科专业</a></li>
-                    <li><a href="#">治理架构</a></li>
-                    <li><a href="#">历史沿革</a></li>
-                    <li><a href="#">学校标志</a></li>
-                    <li><a href="#">校园风光</a></li>
-                    <li><a href="#">校园地图</a></li>
-                </ul>
-            </li>
-            <li class="zz">
-                <a href="#">公共服务</a>
-                <ul class="second">
-                    <li><a href="#">学校简介</a></li>
-                    <li><a href="#">学科专业</a></li>
-                    <li><a href="#">治理架构</a></li>
-                    <li><a href="#">历史沿革</a></li>
-                    <li><a href="#">学校标志</a></li>
-                    <li><a href="#">校园风光</a></li>
-                    <li><a href="#">校园地图</a></li>
-                </ul>
-            </li>
-            <li class="zz">
-                <a href="#">校友会</a>
-                <ul class="second">
-                    <li><a href="#">学校简介</a></li>
-                    <li><a href="#">学科专业</a></li>
-                    <li><a href="#">治理架构</a></li>
-                    <li><a href="#">历史沿革</a></li>
-                    <li><a href="#">学校标志</a></li>
-                    <li><a href="#">校园风光</a></li>
-                    <li><a href="#">校园地图</a></li>
-                </ul>
-            </li>
-        </ul>
     </div>
-
-
-
-    <div id="gray">
-      <div id="big">
-        <a href="#"  style="display:block"><img src="images/banner_00.gif"></a>
-        <a href="#"><img src="images/banner_01 .jpg"></a>
-        <a href="#"><img src="images/0.jpg"></a>
-        <a href="#"><img src="images/5.jpg"></a>
-        <a href="#"><img src="images/bann hner.jpg"></a>
-        <a href="#"><img src="images/banner_1.jpg"></a>
-        <a href="#"><img src="images/banner_3.jpg"></a>
-        <a href="#"><img src="images/banner_04.jpg"></a>
-    
-        <div id="smallimg">
-            <span style="float:left"><</span>
-            <span style="float:right">></span>
-        </div>
-      </div>
-    </div>
-
 </body>
-<script type="text/javascript">
-    window.onload=function(){
-       var Search=document.getElementsByTagName('input')[0];
-       function Onfocus()
-       {
-        if(Search.value=="搜索")
-        {
-        Search.value="";
+<script>
+    var send = document.getElementsByClassName('send')[0];
+    var area = document.getElementsByClassName('area')[0];
+    var warning = document.getElementsByClassName('warning')[0];
+    var msgBox = document.getElementById('msgBox');
+    var timer;
+    // 回车发送消息
+    area.onkeydown = function(e){
+        if(e.keyCode == 13&&e.shiftKey==false){
+            send.onclick();
+            e.preventDefault();
         }
-       }
-       function Onblur()
-       {
-          if(Search.value=="")
-          {
-           Search.value="搜索";
-          }
-       }
-       var k=0;
-       var box=document.getElementById("big");
-       var links=box.children;
-       var click=document.getElementById('smallimg').children;
-       click[0].onclick=function(){
-              if(k==0){
-                links[0].style.display='none';
-              }
-              else{
-                links[k+8].style.display="none";
-              }
-              k--;
-              if(k<-8){
-                k=-1;
-              }
-              links[k+8].style.display="block";
-       }
-       click[1].onclick=function(){
-            change();
-       }
-       var i=0
-       function change(){
-        links[i%8].style.display="none";
-        i++;
-        links[i%8].style.display="block";
-       }
-       var timer=setInterval(change,2000);
-       box.onmouseover=function(){
-          clearInterval(timer);
-       }
-       box.onmouseout=function(){
-          timer=setInterval(change,2000);
-       }
-       
-       var la1=document.getElementsByClassName('zz');
-       var m=0;
-       for(m=0;m<la1.length;m++)
-       {
-            la1[m].onmouseover=function(){
-            this.children[1].style.display="block";  
-            }
-            la1[m].onmouseout=function(){
-            this.children[1].style.display="none";
-            }
-        }
-
     }
-  </script>
 
+    // 点击发送按钮发送消息
+    send.onclick = function(){
+        if (area.value == '') {
+            warning.style.display = 'block';
+            clearTimeout(timer);
+            timer = setTimeout(function(){
+                warning.style.display = 'none';
+            },1000)
+        }else{
+            var li = document.createElement('li');
+            li.className = 'clearFix';
+            li.innerHTML = '<p class="time">'+new Date().toLocaleString()+'</p><p class="content"><span class="conText">'+area.value+'</span><span class="myHead"></span></p>';
+            msgBox.appendChild(li);
+            li.scrollIntoView();
+            area.value ='';
+            area.focus();
+        }
+    }
+    //点击右键
+    document.oncontextmenu=function(e){e.preventDefault();}
+    // var res=document.getElementsByClassName('talk')[0];
+    var res=document.getElementById('wrap').children[2];
+    var rclick=document.getElementsByClassName('rclick')[0]; 
+    res.onmouseup=function(e){
+        if(e.button==2)
+        {
+             rclick.style.top=e.offsetY+'px';
+             rclick.style.left = e.offsetX+'px';
+             rclick.style.display = 'block';
+        }
+        else
+        {
+            rclick.style.display = 'none';
+        }
+    }
+    //笑脸的
+    var imgb=document.getElementById('smilesheet').children;
+   for(var i=0;i<60;i++)
+   {
+    var img=document.createElement('img');
+    var smilesheet=document.getElementById('smilesheet');
+    smilesheet.appendChild(img);
+
+   }
+   for(var j=1;j<=60;j++)
+   {
+          imgb[j].src="images/"+j+".gif"
+   }
+   var k=2;
+   var smile=document.getElementById('smile').children[1];
+   var smilesheet1=document.getElementById('smilesheet');
+    smile.onclick=function(){
+        if(k%2==0)
+        {
+           
+           smilesheet1.style.display="block";
+        }
+        else
+        {
+            smilesheet1.style.display="none";
+        }
+        k++;
+    }
+    
+</script>
 </html>
